@@ -1,4 +1,5 @@
 recursive-include examples *.py *.reg
+include REPO-INFO
 include examples/*.header
 include src/_region_filter.c
 include src/_region_filter.pyx

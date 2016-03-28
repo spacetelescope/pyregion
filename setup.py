@@ -1,4 +1,9 @@
+#!/usr/bin/env python
+import recon.release
 from setuptools import setup, Extension
+
+version = recon.release.get_info()
+recon.release.write_template(version, 'lib/')
 
 # check if cython or pyrex is available.
 pyrex_impls = 'Cython.Distutils.build_ext', 'Pyrex.Distutils.build_ext'
@@ -25,9 +30,6 @@ import warnings
 # compiler), set it to False
 WITH_FILTER = True
 
-for line in open('lib/version.py').readlines():
-    if (line.startswith('__version__')):
-        exec(line.strip())
 
 def main():
     install_requires = ['pyparsing>=2.0.0']
@@ -38,7 +40,7 @@ def main():
     #    install_requires = ['pyparsing<2.0.0']
 
     ka = dict(name = "pyregion",
-              version = __version__,
+              version = version.pep386,
               description = "python parser for ds9 region files",
               author = "Jae-Joon Lee",
               author_email = "lee.j.joon@gmail.com",

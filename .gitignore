@@ -1,0 +1,8 @@
+RECON-INFO
+lib/*/version.py
+build/
+dist/
+*.o
+*.so
+*.pyc
+*.egg-info
