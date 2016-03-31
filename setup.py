@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-import recon.release
+import relic.release
 from setuptools import setup, Extension
 
-version = recon.release.get_info()
-recon.release.write_template(version, 'lib/')
+version = relic.release.get_info()
+relic.release.write_template(version, 'lib/')
 
 # check if cython or pyrex is available.
 pyrex_impls = 'Cython.Distutils.build_ext', 'Pyrex.Distutils.build_ext'
