@@ -1,4 +1,29 @@
+#!/usr/bin/env python
+import os
+import subprocess
+import sys
 from setuptools import setup, Extension
+
+
+if os.path.exists('relic'):
+    sys.path.insert(1, 'relic')
+    import relic.release
+else:
+    try:
+        import relic.release
+    except ImportError:
+        try:
+            subprocess.check_call(['git', 'clone',
+                'https://github.com/jhunkeler/relic.git'])
+            sys.path.insert(1, 'relic')
+            import relic.release
+        except subprocess.CalledProcessError as e:
+            print(e)
+            exit(1)
+
+
+version = relic.release.get_info()
+relic.release.write_template(version, 'lib/')
 
 # check if cython or pyrex is available.
 pyrex_impls = 'Cython.Distutils.build_ext', 'Pyrex.Distutils.build_ext'
@@ -25,9 +50,6 @@ import warnings
 # compiler), set it to False
 WITH_FILTER = True
 
-for line in open('lib/version.py').readlines():
-    if (line.startswith('__version__')):
-        exec(line.strip())
 
 def main():
     install_requires = ['pyparsing>=2.0.0']
@@ -38,7 +60,7 @@ def main():
     #    install_requires = ['pyparsing<2.0.0']
 
     ka = dict(name = "pyregion",
-              version = __version__,
+              version = version.pep386,
               description = "python parser for ds9 region files",
               author = "Jae-Joon Lee",
               author_email = "lee.j.joon@gmail.com",
